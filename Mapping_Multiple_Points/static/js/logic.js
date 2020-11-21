@@ -2,7 +2,7 @@
 console.log("working");
 
 // Create the map object with a center and zoom level.
-let map = L.map('mapid').setView([34.0522, -118.2437], 14);
+let map = L.map('mapid').setView([40.7, -94.5], 4);
 
 // Create the map object with a center and zoom level. Preferred method for layers or background image
 //let map = L.map("mapid", {
@@ -22,13 +22,19 @@ accessToken: API_KEY
 // Then we add our 'graymap' tile layer to the map.
 streets.addTo(map);
 
-//  Add a marker to the map for Los Angeles, California.
-let marker = L.marker([34.0522, -118.2437]).addTo(map);
+// Get data from cities.js
+let cityData = cities;
 
-// Add a circle, circleMarker for fixed pixels
-L.circle([34.0522, -118.2437], {
-  radius: 300,
-  fillColor: '#ffffa1',
-  //fillOpacity:.75,
-  color: 'black'
-}).addTo(map);
+// Loop through the cities array and create one marker for each city.
+cityData.forEach(function(city) {
+  console.log(city)
+  //to add pupup use .bindPipup and format with toLocaleString
+  L.marker(city.location).bindPopup("<h2>" + city.city + ", " + city.state + "</h2> <hr> <h3>Population " + city.population.toLocaleString() + "</h3>").addTo(map);
+  L.circleMarker(city.location, {
+    radius: (city.population-200000)/100000,
+    fillColor:'#ffc273',
+    color:'#f58c02',
+    wheight:4}).addTo(map);
+ });
+
+
